@@ -14,103 +14,9 @@ import {
   Star
 } from 'lucide-react';
 
-interface Particle {
-  x: number;
-  y: number;
-  size: number;
-  speedX: number;
-  speedY: number;
-  color: string;
-  opacity: number;
-}
-
-interface Feature {
-  title: string;
-  icon: JSX.Element;
-  description: string;
-  color: string;
-  bgColor: string;
-  borderColor: string;
-}
-
-const features: Feature[] = [
-  {
-    title: 'Modern Design',
-    icon: <Palette className="h-8 w-8" />,
-    description: 'Clean and contemporary aesthetics',
-    color: 'from-slate-400 to-slate-600',
-    bgColor: 'bg-slate-500/10',
-    borderColor: 'border-slate-500/20'
-  },
-  {
-    title: 'Responsive',
-    icon: <Smartphone className="h-8 w-8" />,
-    description: 'Perfect on all screen sizes',
-    color: 'from-gray-400 to-gray-600',
-    bgColor: 'bg-gray-500/10',
-    borderColor: 'border-gray-500/20'
-  },
-  {
-    title: 'Performance',
-    icon: <Zap className="h-8 w-8" />,
-    description: 'Lightning fast experience',
-    color: 'from-zinc-400 to-zinc-600',
-    bgColor: 'bg-zinc-500/10',
-    borderColor: 'border-zinc-500/20'
-  },
-  {
-    title: 'React 18',
-    icon: <Code className="h-8 w-8" />,
-    description: 'Latest React features',
-    color: 'from-neutral-400 to-neutral-600',
-    bgColor: 'bg-neutral-500/10',
-    borderColor: 'border-neutral-500/20'
-  },
-  {
-    title: 'Next.js 14',
-    icon: <Box className="h-8 w-8" />,
-    description: 'App router & server components',
-    color: 'from-stone-400 to-stone-600',
-    bgColor: 'bg-stone-500/10',
-    borderColor: 'border-stone-500/20'
-  },
-  {
-    title: 'Tailwind CSS',
-    icon: <Grid className="h-8 w-8" />,
-    description: 'Utility-first styling',
-    color: 'from-slate-400 to-slate-600',
-    bgColor: 'bg-slate-500/10',
-    borderColor: 'border-slate-500/20'
-  },
-  {
-    title: 'TypeScript',
-    icon: <Layers className="h-8 w-8" />,
-    description: 'Type safe development',
-    color: 'from-gray-400 to-gray-600',
-    bgColor: 'bg-gray-500/10',
-    borderColor: 'border-gray-500/20'
-  },
-  {
-    title: '3D Effects',
-    icon: <Sparkles className="h-8 w-8" />,
-    description: 'Immersive particle system',
-    color: 'from-zinc-400 to-zinc-600',
-    bgColor: 'bg-zinc-500/10',
-    borderColor: 'border-zinc-500/20'
-  },
-  {
-    title: 'Global Ready',
-    icon: <Globe className="h-8 w-8" />,
-    description: 'Built for scale',
-    color: 'from-neutral-400 to-neutral-600',
-    bgColor: 'bg-neutral-500/10',
-    borderColor: 'border-neutral-500/20'
-  }
-];
-
 export default function Home() {
-  const [mounted, setMounted] = useState<boolean>(false);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const canvasRef = useRef(null);
 
   useEffect(() => {
     setMounted(true);
@@ -126,7 +32,7 @@ export default function Home() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const particles: Particle[] = [];
+    const particles = [];
 
     for (let i = 0; i < 80; i++) {
       particles.push({
@@ -144,7 +50,7 @@ export default function Home() {
       ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      particles.forEach((particle: Particle, index: number) => {
+      particles.forEach((particle, index) => {
         particle.x += particle.speedX;
         particle.y += particle.speedY;
 
@@ -159,7 +65,7 @@ export default function Home() {
         ctx.globalAlpha = particle.opacity;
         ctx.fill();
 
-        particles.slice(index + 1).forEach((otherParticle: Particle) => {
+        particles.slice(index + 1).forEach((otherParticle) => {
           const dx = particle.x - otherParticle.x;
           const dy = particle.y - otherParticle.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
@@ -255,24 +161,122 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {features.map((feature: Feature, index: number) => (
-                <div
-                  key={index}
-                  className={`group relative backdrop-blur-sm border rounded-2xl p-6 transition-all duration-500 hover:scale-105 hover:shadow-2xl ${feature.bgColor} ${feature.borderColor}`}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl blur-xl -z-10"></div>
-                  
-                  <div className="flex items-start space-x-4">
-                    <div className={`p-3 rounded-xl bg-gradient-to-r ${feature.color} shadow-lg`}>
-                      {feature.icon}
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold text-white/90 mb-2">{feature.title}</h3>
-                      <p className="text-white/50 text-sm">{feature.description}</p>
-                    </div>
+              <div className="group relative backdrop-blur-sm border border-slate-500/20 bg-slate-500/10 rounded-2xl p-6 transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl blur-xl -z-10"></div>
+                <div className="flex items-start space-x-4">
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-slate-400 to-slate-600 shadow-lg">
+                    <Palette className="h-8 w-8" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-white/90 mb-2">Modern Design</h3>
+                    <p className="text-white/50 text-sm">Clean and contemporary aesthetics</p>
                   </div>
                 </div>
-              ))}
+              </div>
+
+              <div className="group relative backdrop-blur-sm border border-gray-500/20 bg-gray-500/10 rounded-2xl p-6 transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl blur-xl -z-10"></div>
+                <div className="flex items-start space-x-4">
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-gray-400 to-gray-600 shadow-lg">
+                    <Smartphone className="h-8 w-8" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-white/90 mb-2">Responsive</h3>
+                    <p className="text-white/50 text-sm">Perfect on all screen sizes</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="group relative backdrop-blur-sm border border-zinc-500/20 bg-zinc-500/10 rounded-2xl p-6 transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl blur-xl -z-10"></div>
+                <div className="flex items-start space-x-4">
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-zinc-400 to-zinc-600 shadow-lg">
+                    <Zap className="h-8 w-8" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-white/90 mb-2">Performance</h3>
+                    <p className="text-white/50 text-sm">Lightning fast experience</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="group relative backdrop-blur-sm border border-neutral-500/20 bg-neutral-500/10 rounded-2xl p-6 transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl blur-xl -z-10"></div>
+                <div className="flex items-start space-x-4">
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-neutral-400 to-neutral-600 shadow-lg">
+                    <Code className="h-8 w-8" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-white/90 mb-2">React 18</h3>
+                    <p className="text-white/50 text-sm">Latest React features</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="group relative backdrop-blur-sm border border-stone-500/20 bg-stone-500/10 rounded-2xl p-6 transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl blur-xl -z-10"></div>
+                <div className="flex items-start space-x-4">
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-stone-400 to-stone-600 shadow-lg">
+                    <Box className="h-8 w-8" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-white/90 mb-2">Next.js 14</h3>
+                    <p className="text-white/50 text-sm">App router & server components</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="group relative backdrop-blur-sm border border-slate-500/20 bg-slate-500/10 rounded-2xl p-6 transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl blur-xl -z-10"></div>
+                <div className="flex items-start space-x-4">
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-slate-400 to-slate-600 shadow-lg">
+                    <Grid className="h-8 w-8" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-white/90 mb-2">Tailwind CSS</h3>
+                    <p className="text-white/50 text-sm">Utility-first styling</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="group relative backdrop-blur-sm border border-gray-500/20 bg-gray-500/10 rounded-2xl p-6 transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl blur-xl -z-10"></div>
+                <div className="flex items-start space-x-4">
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-gray-400 to-gray-600 shadow-lg">
+                    <Layers className="h-8 w-8" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-white/90 mb-2">TypeScript</h3>
+                    <p className="text-white/50 text-sm">Type safe development</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="group relative backdrop-blur-sm border border-zinc-500/20 bg-zinc-500/10 rounded-2xl p-6 transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl blur-xl -z-10"></div>
+                <div className="flex items-start space-x-4">
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-zinc-400 to-zinc-600 shadow-lg">
+                    <Sparkles className="h-8 w-8" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-white/90 mb-2">3D Effects</h3>
+                    <p className="text-white/50 text-sm">Immersive particle system</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="group relative backdrop-blur-sm border border-neutral-500/20 bg-neutral-500/10 rounded-2xl p-6 transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl blur-xl -z-10"></div>
+                <div className="flex items-start space-x-4">
+                  <div className="p-3 rounded-xl bg-gradient-to-r from-neutral-400 to-neutral-600 shadow-lg">
+                    <Globe className="h-8 w-8" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-white/90 mb-2">Global Ready</h3>
+                    <p className="text-white/50 text-sm">Built for scale</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="mt-20 text-center">
