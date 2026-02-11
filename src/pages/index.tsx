@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { 
+import {
   Crown,
   Sparkles,
   Zap,
@@ -14,7 +14,26 @@ import {
   Star
 } from 'lucide-react';
 
-const features = [
+interface Particle {
+  x: number;
+  y: number;
+  size: number;
+  speedX: number;
+  speedY: number;
+  color: string;
+  opacity: number;
+}
+
+interface Feature {
+  title: string;
+  icon: JSX.Element;
+  description: string;
+  color: string;
+  bgColor: string;
+  borderColor: string;
+}
+
+const features: Feature[] = [
   {
     title: 'Modern Design',
     icon: <Palette className="h-8 w-8" />,
@@ -90,8 +109,8 @@ const features = [
 ];
 
 export default function Home() {
-  const [mounted, setMounted] = useState(false);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [mounted, setMounted] = useState<boolean>(false);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -107,7 +126,7 @@ export default function Home() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const particles = [];
+    const particles: Particle[] = [];
 
     for (let i = 0; i < 80; i++) {
       particles.push({
@@ -125,7 +144,7 @@ export default function Home() {
       ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      particles.forEach((particle, index) => {
+      particles.forEach((particle: Particle, index: number) => {
         particle.x += particle.speedX;
         particle.y += particle.speedY;
 
@@ -140,7 +159,7 @@ export default function Home() {
         ctx.globalAlpha = particle.opacity;
         ctx.fill();
 
-        particles.slice(index + 1).forEach(otherParticle => {
+        particles.slice(index + 1).forEach((otherParticle: Particle) => {
           const dx = particle.x - otherParticle.x;
           const dy = particle.y - otherParticle.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
@@ -236,7 +255,7 @@ export default function Home() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {features.map((feature, index) => (
+              {features.map((feature: Feature, index: number) => (
                 <div
                   key={index}
                   className={`group relative backdrop-blur-sm border rounded-2xl p-6 transition-all duration-500 hover:scale-105 hover:shadow-2xl ${feature.bgColor} ${feature.borderColor}`}
@@ -272,7 +291,7 @@ export default function Home() {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes float {
           0% {
             transform: translateY(0px) translateX(0);
