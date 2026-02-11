@@ -1,3 +1,5 @@
+//Coded by fluxon (not part of ai )
+
 import { useEffect, useState, useRef } from 'react';
 import {
   Crown,
